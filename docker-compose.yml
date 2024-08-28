@@ -9,9 +9,8 @@ services:
       - celery
     volumes:
       - ./app:/app
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
     ports:
       - "8000:8000"
 
@@ -24,9 +23,8 @@ services:
       - mongodb
     volumes:
       - ./app:/app
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
 
   redis:
     image: redis:7.4.0-alpine

@@ -26,7 +26,7 @@ def insert_request(
 def update_request(
         user_id: str,
         progress: int,
-        new_result: int,
+        new_result: dict,
         status: str
 ):
     filter_query = {"user_id": user_id}
@@ -37,6 +37,18 @@ def update_request(
         },
         "$push": {
             "results": new_result
+        },
+    }
+    collection.update_one(filter=filter_query, update=update_data)
+    return {"message": "Document updated successfully"}
+
+def abort_request(
+        user_id: str
+):
+    filter_query = {"user_id": user_id}
+    update_data = {
+        "$set": {
+            "status": "FAILED"
         },
     }
     collection.update_one(filter=filter_query, update=update_data)
