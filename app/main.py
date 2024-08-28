@@ -1,19 +1,35 @@
-from fastapi import FastAPI
+from datetime import datetime
+
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from tasks import add, celery_app
+
+from db import get_request
+from tasks import add
 
 app = FastAPI()
 
 class Operators(BaseModel):
     x: int
     y: int
+    user_id: str
 
-@app.post("/tasks/add/")
+class ResponseModel(BaseModel):
+    user_id: str
+    task_id: str
+    status: str
+    progress: int
+    timestamp: datetime
+    results: list
+
+
+@app.post("/openweather")
 async def add_task(operators: Operators) -> dict:
-    task_id = add.delay(operators.x, operators.y)
+    task_id = add.delay(operators.user_id, operators.x, operators.y)
     return {"task_id": task_id.id}
 
-@app.get("/tasks/{task_id}/")
-async def get_task_result(task_id: str) -> dict:
-    task_result = celery_app.AsyncResult(task_id)
-    return {"task_id": task_id, "status": task_result.status, "result": task_result.result}
+@app.get("/openweather/{user_id}", response_model=ResponseModel)
+async def get_task_result(user_id: str) -> dict:
+    request = get_request(user_id=user_id)
+    if not request:
+        raise HTTPException(status_code=404, detail="Request not found")
+    return request

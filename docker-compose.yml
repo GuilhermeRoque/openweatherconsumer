@@ -21,6 +21,7 @@ services:
       dockerfile: ./celery.dockerfile
     depends_on:
       - redis
+      - mongodb
     volumes:
       - ./app:/app
     environment:
@@ -31,3 +32,9 @@ services:
     image: redis:7.4.0-alpine
     ports:
       - "6379:6379"
+
+  mongodb:
+    image: mongo:7.0.14-jammy
+    container_name: mongodb
+    ports:
+      - "27017:27017"
