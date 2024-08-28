@@ -1,5 +1,7 @@
 import logging
+import math
 import os
+import re
 import time
 import requests
 from celery import Celery
@@ -23,7 +25,7 @@ def get_all_cities_weather(self, user_id: str):
         task_id=self.request.id
     )
     with open("city_codes.txt") as f:
-        codes = f.read().replace(" ","").split(",")
+        codes = re.sub(r'\s+', '', f.read()).split(",")
         len_codes = len(codes)
         for i, code in enumerate(codes):
             path = f"{openweather_url}weather?id={code}&appid={openweather_apikey}"
@@ -35,11 +37,11 @@ def get_all_cities_weather(self, user_id: str):
             payload = response.json()
             temp = payload['main']['temp']
             humidity = payload['main']['humidity']
-            progress = int(i/len_codes)
-            time.sleep(3)
+            progress = math.ceil(i/len_codes * 100)
             update_request(
                 user_id=user_id,
                 progress=progress,
                 new_result={"id": code, "temperature": temp, "humidity": humidity},
                 status="PROGRESS" if i < len_codes else "DONE"
             )
+            time.sleep(1) # sleep 1 sec between iteration to not reach the 60 requests per minute limit
