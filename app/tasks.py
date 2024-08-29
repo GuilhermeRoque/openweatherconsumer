@@ -42,19 +42,18 @@ def task_get_cities_weather(self, user_id: str):
             break
         payload = response.json()
         temp = payload['main']['temp']
-        temp_celsius = (temp - 32) * 5/9
         humidity = payload['main']['humidity']
         progress = math.ceil(i/(len_codes - 1) * 100)
         update_task(
             user_id=user_id,
             progress=progress,
-            new_result={"id": code, "temperature": temp_celsius, "humidity": humidity},
+            new_result={"id": code, "temperature": temp, "humidity": humidity},
             status="PROGRESS" if i < len_codes - 1 else "DONE"
         )
         time.sleep(1) # sleep 1 sec between iteration to not reach the 60 requests per minute limit
 
 
 def request_city_weather(code: str) -> Response:
-    path = f"{openweather_url}weather?id={code}&appid={openweather_apikey}"
+    path = f"{openweather_url}weather?id={code}&appid={openweather_apikey}&units=metric"
     response = requests.get(path)
     return response
