@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, Mock
 from requests import Response
 
-from db import get_request
+from db import read_task
 from tasks import task_get_cities_weather
 from main import app
 
@@ -61,7 +61,7 @@ def test_task_get_cities_weather(mock_read_codes, request_weather_mock):
     }
     request_weather_mock.return_value = mock_response
     task_get_cities_weather(user_id=user_id)
-    log_request = get_request(user_id=user_id)
+    log_request = read_task(user_id=user_id)
 
     assert log_request is not None
     assert log_request["status"] == "DONE"
@@ -84,7 +84,7 @@ def test_task_get_cities_weather(mock_read_codes, request_weather_mock):
     }
     request_weather_mock.return_value = mock_response
     task_get_cities_weather(user_id=user_id)
-    log_request = get_request(user_id=user_id)
+    log_request = read_task(user_id=user_id)
 
     assert log_request is not None
     assert log_request["status"] == "DONE"
@@ -104,7 +104,7 @@ def test_task_get_cities_weather_error_request(mock_read_codes, request_weather_
     }
     request_weather_mock.return_value = mock_response
     task_get_cities_weather(user_id=user_id)
-    log_request = get_request(user_id=user_id)
+    log_request = read_task(user_id=user_id)
 
     assert log_request is not None
     assert log_request["status"] == "FAILED"

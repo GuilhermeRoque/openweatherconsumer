@@ -8,7 +8,7 @@ client = MongoClient(mongo_url)
 db = client['async_requests']
 collection = db['openweather_requests']
 
-def insert_request(
+def insert_task(
     user_id: str,
     task_id: int = None
 ):
@@ -23,7 +23,7 @@ def insert_request(
     collection.insert_one(document=document)
     return {"message": "Document added successfully"}
 
-def update_request(
+def update_task(
         user_id: str,
         progress: int,
         new_result: dict,
@@ -42,7 +42,7 @@ def update_request(
     collection.update_one(filter=filter_query, update=update_data)
     return {"message": "Document updated successfully"}
 
-def abort_request(
+def abort_task(
         user_id: str
 ):
     filter_query = {"user_id": user_id}
@@ -54,5 +54,5 @@ def abort_request(
     collection.update_one(filter=filter_query, update=update_data)
     return {"message": "Document updated successfully"}
 
-def get_request(user_id: str):
+def read_task(user_id: str):
     return collection.find_one({"user_id": user_id})
