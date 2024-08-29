@@ -26,10 +26,9 @@ all: check-env
 	@echo "Building and starting docker containers"
 	docker-compose up --build
 
-run-infra-test:
+start-infra-test:
 	docker run -d --name mongodb-test -p 27017:27017 mongo:7.0.14-jammy
-	docker run -d --name redis-test -p 6379:6379 redis:7.4.0-alpine
 
 stop-infra-test:
 	docker stop mongodb-test
-	docker stop redis-test
+	docker rm mongodb-test
