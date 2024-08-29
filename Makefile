@@ -26,9 +26,21 @@ all: check-env
 	@echo "Building and starting docker containers"
 	docker-compose up --build
 
-start-infra-test:
-	docker run -d --name mongodb-test -p 27017:27017 mongo:7.0.14-jammy
+test-start-infra:
+	docker network create network-test
+	docker run -d --name mongodb-test --network network-test -p 27017:27017 mongo:7.0.14-jammy
 
-stop-infra-test:
+test-stop-infra:
 	docker stop mongodb-test
 	docker rm mongodb-test
+	docker network rm network-test
+
+test-build-img:
+	docker build --file app_test.dockerfile -t openweather_test:latest .
+
+test-run:
+	docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test openweather_test:latest
+	docker rm openweather_test
+
+test-run-it:
+	docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test -it openweather_test:latest /bin/bash
