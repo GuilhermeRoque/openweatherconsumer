@@ -7,7 +7,7 @@ import requests
 from celery import Celery
 from requests import Response
 
-from api.db import insert_request, update_request, abort_request
+from db import insert_request, update_request, abort_request
 
 broker_url = os.getenv('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 openweather_url = os.getenv('OPENWEATHER_URL', 'https://api.openweathermap.org/data/2.5/')

@@ -6,13 +6,13 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, Mock
 from requests import Response
 
-from api.db import get_request
-from api.tasks import task_get_cities_weather
-from api.main import app
+from db import get_request
+from tasks import task_get_cities_weather
+from main import app
 
 client = TestClient(app)
 
-@patch("api.main.run_task")
+@patch("main.run_task")
 def test_post_request_endpoint(run_task_mock):
     user_id = str(uuid.uuid4())
     mock_task_id = str(uuid.uuid4())
@@ -26,7 +26,7 @@ def test_get_request_endpoint_not_found():
     assert response.status_code == 404
 
 
-@patch("api.main.get_request", return_value=1)
+@patch("main.get_request", return_value=1)
 def test_get_request_endpoint(get_request_mock):
     user_id = str(uuid.uuid4())
     mock_task_id = str(uuid.uuid4())
@@ -46,8 +46,8 @@ def test_get_request_endpoint(get_request_mock):
     assert mock_request["user_id"] == response_payload["user_id"]
     assert mock_request["task_id"] == response_payload["task_id"]
 
-@patch("api.tasks.request_city_weather")
-@patch("api.tasks.read_city_codes")
+@patch("tasks.request_city_weather")
+@patch("tasks.read_city_codes")
 def test_task_get_cities_weather(mock_read_codes, request_weather_mock):
     user_id = str(uuid.uuid4())
     mock_read_codes.return_value = "3439525, 3439781, 3440645"
@@ -69,8 +69,8 @@ def test_task_get_cities_weather(mock_read_codes, request_weather_mock):
     assert len(log_request["results"]) == 3
 
 
-@patch("api.tasks.request_city_weather")
-@patch("api.tasks.read_city_codes")
+@patch("tasks.request_city_weather")
+@patch("tasks.read_city_codes")
 def test_task_get_cities_weather(mock_read_codes, request_weather_mock):
     user_id = str(uuid.uuid4())
     mock_read_codes.return_value = "3439525, 3439781, 3440645"
@@ -92,8 +92,8 @@ def test_task_get_cities_weather(mock_read_codes, request_weather_mock):
     assert len(log_request["results"]) == 3
 
 
-@patch("api.tasks.request_city_weather")
-@patch("api.tasks.read_city_codes")
+@patch("tasks.request_city_weather")
+@patch("tasks.read_city_codes")
 def test_task_get_cities_weather_error_request(mock_read_codes, request_weather_mock):
     user_id = str(uuid.uuid4())
     mock_read_codes.return_value = "3439525, 3439781, 3440645"
