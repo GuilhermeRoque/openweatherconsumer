@@ -1,0 +1,13 @@
+[run]
+# Exclude test files and directories from coverage
+omit =
+    */test_*.py
+    */tests/*
+    */conftest.py
+    */__init__.py
+
+[report]
+# Options for the coverage report
+exclude_lines =
+    pragma: no cover
+    if __name__ == '__main__':  # pragma: no cover

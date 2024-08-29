@@ -33,6 +33,5 @@ services:
 
   mongodb:
     image: mongo:7.0.14-jammy
-    container_name: mongodb
     ports:
       - "27017:27017"

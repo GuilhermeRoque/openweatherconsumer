@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from db import get_request
-from tasks import get_all_cities_weather
+from tasks import task_get_cities_weather
 
 app = FastAPI()
 
@@ -19,11 +19,14 @@ class ResponseModel(BaseModel):
     timestamp: datetime
     results: list
 
+def run_task(user_id):
+    task = task_get_cities_weather.delay(user_id)
+    return task.id
 
 @app.post("/openweather")
 async def add_task(request: RequestModel) -> dict:
-    task_id = get_all_cities_weather.delay(request.user_id)
-    return {"task_id": task_id.id}
+    task_id = run_task(request.user_id)
+    return {"task_id": task_id}
 
 @app.get("/openweather/{user_id}", response_model=ResponseModel)
 async def get_task_result(user_id: str) -> dict:
