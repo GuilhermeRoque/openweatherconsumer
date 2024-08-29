@@ -19,7 +19,7 @@ Before you begin, ensure you have the following:
 The Makefile includes several commands. The most important are:
 
 - `make all`: Runs the application using Docker Compose.
-- `make clear`: Stops and removes the containers.
+- `make clean`: Stops and removes the containers.
 - `make test-start-infra`: Starts a database container to prepare for running the tests.
 - `make test-build-img`: Builds a Docker image for running the tests.
 - `make test-run`: Runs the tests.
