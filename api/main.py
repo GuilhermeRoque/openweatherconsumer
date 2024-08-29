@@ -3,8 +3,8 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from db import get_request
-from tasks import task_get_cities_weather
+from api.db import get_request
+from api.tasks import task_get_cities_weather
 
 app = FastAPI()
 
