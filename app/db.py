@@ -10,7 +10,7 @@ collection = db['openweather_requests']
 
 def insert_task(
     user_id: str,
-    task_id: int = None
+    task_id: str = None
 ):
     document = {
         "user_id": user_id,

@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, Mock
 from requests import Response
 
-from db import read_task
+from db import read_task, insert_task
 from tasks import task_get_cities_weather
 from main import app
 
@@ -20,13 +20,20 @@ def test_post_request_endpoint(run_task_mock):
     response = client.post("/openweather", json={"user_id": user_id})
     assert response.status_code == 200
 
+def test_post_request_endpoint_error_duplicated():
+    user_id = str(uuid.uuid4())
+    mock_task_id = str(uuid.uuid4())
+    insert_task(user_id=user_id, task_id=mock_task_id)
+    response = client.post("/openweather", json={"user_id": user_id})
+    assert response.status_code == 400
+
 def test_get_request_endpoint_not_found():
     user_id = str(uuid.uuid4())
     response = client.get(f"/openweather/{user_id}")
     assert response.status_code == 404
 
 
-@patch("main.get_request", return_value=1)
+@patch("main.read_task", return_value=1)
 def test_get_request_endpoint(get_request_mock):
     user_id = str(uuid.uuid4())
     mock_task_id = str(uuid.uuid4())

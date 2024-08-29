@@ -29,6 +29,9 @@ def run_task(user_id:str) -> str:
 
 @app.post("/openweather", response_model=StartTaskResponse)
 async def start_task(request: StartTaskRequest):
+    task = read_task(user_id=request.user_id)
+    if task:
+        raise HTTPException(status_code=400, detail="The user_id already exists")
     task_id = run_task(request.user_id)
     return StartTaskResponse(task_id=task_id)
 

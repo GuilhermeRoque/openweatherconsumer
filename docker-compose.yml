@@ -7,8 +7,6 @@ services:
       dockerfile: app.dockerfile
     depends_on:
       - celery
-    volumes:
-      - ./app:/app
     env_file:
       - .env
     ports:
@@ -21,8 +19,6 @@ services:
     depends_on:
       - redis
       - mongodb
-    volumes:
-      - ./app:/app
     env_file:
       - .env
 
