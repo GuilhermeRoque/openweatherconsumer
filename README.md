@@ -24,6 +24,9 @@ The Makefile includes several commands. The most important are:
 - `make test-build-img`: Builds a Docker image for running the tests.
 - `make test-run`: Runs the tests.
 
+**Notes**: 
+- If you can't use make because you are no in a Linux system you can copy and paste the commands in the file Makefile
+
 ### Summary
 
 - To run the application, execute `make all`. Afterward, you can access the REST API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
@@ -38,3 +41,12 @@ Here are the key technologies used in this project:
 - **Celery**: Utilized for running asynchronous tasks. While the current requirements do not involve complex asynchronous task handling, Celery provides a robust solution for potential future needs.
 - **Redis**: Serves as the broker for asynchronous tasks. It is simpler and more lightweight compared to other broker options, such as AMQP.
 - **Pytest**: Chosen for automated testing due to its simplicity compared to `unittest.TestCase` classes.
+- **NGINX**: Reverse proxy for the application. This allows the creation of application replicas.
+
+## Deploy
+Deploy is defined in the docker-compose.yml file, which is called by "make all" command and will run the following:
+- 2 API instances
+- 2 celery workers instances, which runs 5 workers each
+- 1 MongoDB instance
+- 1 Redis instance
+- 1 NGINX instance

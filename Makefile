@@ -24,7 +24,7 @@ clean:
 
 all: check-env
 	@echo "Building and starting docker containers"
-	docker-compose up --build
+	docker-compose up --build --scale app=2 --scale celery=2
 
 test-start-infra:
 	docker network create network-test
