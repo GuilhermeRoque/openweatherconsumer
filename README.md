@@ -25,7 +25,7 @@ The Makefile includes several commands. The most important are:
 - `make test-run`: Runs the tests.
 
 **Notes**: 
-- If you can't use make because you are no in a Linux system you can copy and paste the commands in the file Makefile
+- If you can't use make because you aren't in a Linux system you can copy and paste the commands in the file Makefile
 
 ### Summary
 
