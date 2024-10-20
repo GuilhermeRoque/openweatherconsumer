@@ -56,3 +56,10 @@ def abort_task(
 
 def read_task(user_id: str):
     return collection.find_one({"user_id": user_id})
+
+def read_task_in_progress(user_id: str):
+    return collection.find_one({"user_id": user_id, "status": "PROGRESS"})
+
+def count_task_progress() -> int:
+    count = collection.count_documents({"status": "PROGRESS"})
+    return count

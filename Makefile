@@ -26,6 +26,10 @@ all: check-env
 	@echo "Building and starting docker containers"
 	docker-compose up --build --scale app=2 --scale celery=2
 
+all-minimal: check-env
+	@echo "Building and starting docker containers"
+	docker-compose up --build
+
 test-start-infra:
 	docker network create network-test
 	docker run -d --name mongodb-test --network network-test -p 27017:27017 mongo:7.0.14-jammy
@@ -39,8 +43,11 @@ test-build-img:
 	docker build --file app_test.dockerfile -t openweather_test:latest .
 
 test-run:
-	docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test openweather_test:latest
+	-docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test openweather_test:latest
 	docker rm openweather_test
 
 test-run-it:
-	docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test -it openweather_test:latest /bin/bash
+	docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test -it -v ./app:/app openweather_test:latest /bin/bash
+
+test-run-server:
+	docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test -it -v ./app:/app -p 8000:8000 openweather_test:latest uvicorn main:app --host 0.0.0.0 --port 8000 --reload
