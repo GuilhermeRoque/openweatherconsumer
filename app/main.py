@@ -1,3 +1,4 @@
+import os
 import uuid
 from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
@@ -16,7 +17,7 @@ SECRET_KEY = secrets.token_hex(32)  # Generates a secure random 64-character hex
 ALGORITHM = 'HS256'
 
 origins = [
-    "http://localhost:3000",  # Adjust this to your frontend's address
+    os.getenv('FRONT_ADDRESS', "http://localhost:3000")
 ]
 
 app.add_middleware(
