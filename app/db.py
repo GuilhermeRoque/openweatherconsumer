@@ -15,7 +15,7 @@ def insert_task(
     document = {
         "user_id": user_id,
         "task_id": task_id,
-        "timestamp": datetime.datetime.utcnow(),
+        "timestamp": datetime.datetime.now(datetime.UTC),
         "progress": 0,
         "status": "PROGRESS",
         "results": []

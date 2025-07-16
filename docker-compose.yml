@@ -20,6 +20,8 @@ services:
       - .env
     ports:
       - "8000"
+    volumes:
+      - ./app:/app
 
   celery:
     build:

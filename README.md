@@ -1,8 +1,18 @@
-# OpenWeather Consumer
+# OpenWeather Service
 
 ## Description
 
-This application consumes the OpenWeather API to retrieve weather information based on hardcoded city codes, which are listed in `app/city_codes.txt`.
+This application consumes the OpenWeather API to retrieve weather information based on city names, like 'São Paulo' or 'Rio de Janeiro', which are listed in `app/city_map.json`.
+
+**Usage**
+
+- Get a token by executing a GET request on `/userid`
+- Start an async task by executing a POST request on `/openweather` and passing city names on the request body. This will start a background task to request the cities weather information.
+- Get the task result by executing a GET request on `/openweather`. This will return the current retrieved weather information and the task current status. 
+
+**Notes**
+
+- See details about API in the Swagger UI at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) after running the application.
 
 ## Prerequisites
 
@@ -45,8 +55,8 @@ Here are the key technologies used in this project:
 
 ## Deploy
 Deploy is defined in the docker-compose.yml file, which is called by "make all" command and will run the following:
-- 2 API instances
-- 2 celery workers instances, which runs 5 workers each
+- 1 API instances
+- 1 celery workers instances, which runs 5 workers each
 - 1 MongoDB instance
 - 1 Redis instance
 - 1 NGINX instance

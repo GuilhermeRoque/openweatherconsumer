@@ -24,10 +24,6 @@ clean:
 
 all: check-env
 	@echo "Building and starting docker containers"
-	docker-compose up --build --scale app=2 --scale celery=2
-
-all-minimal: check-env
-	@echo "Building and starting docker containers"
 	docker-compose up --build
 
 test-start-infra:
@@ -43,7 +39,7 @@ test-build-img:
 	docker build --file app_test.dockerfile -t openweather_test:latest .
 
 test-run:
-	-docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test openweather_test:latest
+	-docker run -e MONGO_URL=mongodb://mongodb-test:27017/ --name openweather_test --network network-test -v ./app:/app openweather_test:latest
 	docker rm openweather_test
 
 test-run-it:
