@@ -6,9 +6,9 @@ This application consumes the OpenWeather API to retrieve weather information ba
 
 **Usage**
 
-- Get a token by executing a GET request on `/userid`
-- Start an async task by executing a POST request on `/openweather` and passing city names on the request body. This will start a background task to request the cities weather information.
-- Get the task result by executing a GET request on `/openweather`. This will return the current retrieved weather information and the task current status. 
+- Retrieve an access token by sending a GET request to the /userid endpoint.
+- Start a background task by sending a POST request to /openweather, including the previously obtained token in the Authorization header as a Bearer token. The request body must contain a list of city names. This will trigger an asynchronous process to fetch weather data for the specified cities.
+- Check the task's progress and results by sending a GET request to /openweather with the same Bearer token. The response includes the current status of the task and any weather information retrieved so far.
 
 **Notes**
 
